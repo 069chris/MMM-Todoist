@@ -9,17 +9,19 @@
  */
 //@ts-ignore
 import { TodoistApi } from "@todoist-api-typescript"
-const NodeHelper = require("node_helper");
-const showdown = require("showdown");
+//@ts-ignore
+import NodeHelper from "node_helper";
+//@ts-ignore
+import showdown from "showdown";
 
 const markdown = new showdown.Converter();
-
+let config: any
 module.exports = NodeHelper.create({
     start: function () {
         console.log("Starting node helper for: " + this.name);
     },
 
-    socketNotificationReceived: function (notification, payload) {
+    socketNotificationReceived: function (notification: any, payload: JSON) {
         if (notification === "FETCH_TODOIST") {
             this.config = payload;
             this.fetchTodos();
@@ -33,27 +35,24 @@ module.exports = NodeHelper.create({
         const api = new TodoistApi(accessToken)
         console.log("fetching Tasks...")
         api.getTasks({ roject_id: config.project }).then(
-
-            (tasks) => {
+            (tasks: string) => {
                 var taskJson = JSON.parse(tasks);
-                taskJson.items.forEach((item) => {
+                taskJson.items.forEach((item: { contentHtml: any; content: any; }) => {
                     item.contentHtml = markdown.makeHtml(item.content);
                 });
 
-                taskJson.accessToken = acessCode;
                 self.sendSocketNotification("TASKS", taskJson);
             }
 
         )
-            .catch((error) => {
+            .catch((error: string) => {
                 {
                     if (self.config.debug) {
-                        console.log(body);
+                        console.log(error);
                     }
                     self.sendSocketNotification("FETCH_ERROR", {
                         error: error
                     });
-                    console.log("Todoist api request status=" + response.statusCode);
                     return console.error(" ERROR - MMM-Todoist: " + error);
                 }
             }
