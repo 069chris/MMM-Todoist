@@ -22,6 +22,13 @@
   "dependencies": {
     "audit": "^0.0.6",
     "request": "latest",
-    "showdown": "^2.0.1"
+    "showdown": "^2.0.1",
+    "@doist/todoist-api-typescript": "^3.0.1",
+    "@types/npm": "^7.19.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
   }
 }
